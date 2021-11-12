@@ -12,7 +12,7 @@ app.use(cors())
 dotenv.config({ path: 'config.env' })
 
 // const uri = process.env.MONGODB_URI
-const uri = `mongodb+srv://${DB_USER}:${DB_PASS}@cluster0.dpr9k.mongodb.net/FedEX?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dpr9k.mongodb.net/FedEX?retryWrites=true&w=majority`;
 const client = new MongoClient(uri)
 
 async function run() {
