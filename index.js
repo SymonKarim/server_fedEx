@@ -1,3 +1,4 @@
+const PORT = process.env.PORT || 5000
 const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
@@ -98,6 +99,7 @@ async function run() {
   }
 }
 run().catch(console.dir)
-
-const PORT = process.env.PORT || 5000
+app.get('/', async (req, res)=>{
+  res.send("running the server!");
+})
 app.listen(PORT, () => console.log(`Listen on PORT: ${PORT}`))

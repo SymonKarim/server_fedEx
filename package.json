@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-dev": "nodemon inedx",
-    "start": "node inedx"
+    "start": "node inedx.js",
+    "start-dev": "nodemon inedx.js"
   },
   "keywords": [],
   "author": "",
