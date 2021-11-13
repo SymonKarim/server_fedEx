@@ -12,7 +12,9 @@ dotenv.config({ path: "config.env" });
 
 const uri = `mongodb+srv://${process.env.DB_USERtwo}:${process.env.DB_PASStwo}@cluster0.dpr9k.mongodb.net/FedEX?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
-
+app.get("/",  (req, res) => {
+  res.send("running from server")
+});
 async function run() {
   try {
     await client.connect();
