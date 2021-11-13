@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.port || 5000;
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -18,7 +18,7 @@ async function run() {
     const database = client.db("FedEX");
     const foodItems = database.collection("foodItems");
     const orders = database.collection("orders");
-    
+
     app.post("/add_new_item", async (req, res) => {
       const newItem = req.body;
       try {
@@ -28,7 +28,7 @@ async function run() {
         res.status(400).json(error.message);
       }
     });
-    
+
     app.get("/all_items", async (req, res) => {
       try {
         const allItems = await foodItems.find().toArray();
@@ -37,7 +37,7 @@ async function run() {
         res.status(400).json(error.message);
       }
     });
-    
+
     app.get("/product/:id", async (req, res) => {
       const productId = req.params.id;
       try {
@@ -49,7 +49,7 @@ async function run() {
         res.status(400).json(error.message);
       }
     });
-    
+
     app.post("/create_order/:id", async (req, res) => {
       const productId = req.params.id;
       const newItem = { productId, ...req.body };
@@ -60,7 +60,7 @@ async function run() {
         res.status(400).json(error.message);
       }
     });
-    
+
     app.get("/all_orders", async (req, res) => {
       try {
         const allItems = await orders.find().toArray();
@@ -69,37 +69,36 @@ async function run() {
         res.status(400).json(error.message);
       }
     });
-    
+
     app.put("/updateStatus/:id", async (req, res) => {
       const orderId = req.params.id;
       try {
         const order = await orders.updateOne(
           { _id: orderId },
           { $set: { status: "Approved" } }
-          );
-          res.status(200).json(order);
-        } catch (error) {
-          res.status(400).json(error.message);
-        }
-      });
-      
-      app.delete("/delete_order/:id", async (req, res) => {
-        const orderId = req.params.id;
-        try {
-          const order = await orders.deleteOne({ _id: orderId });
-          res.status(200).json(order);
-        } catch (error) {
-          res.status(400).json(error.message);
-        }
-      });
-    } finally {
-      // await client.close()
-    }
+        );
+        res.status(200).json(order);
+      } catch (error) {
+        res.status(400).json(error.message);
+      }
+    });
+
+    app.delete("/delete_order/:id", async (req, res) => {
+      const orderId = req.params.id;
+      try {
+        const order = await orders.deleteOne({ _id: orderId });
+        res.status(200).json(order);
+      } catch (error) {
+        res.status(400).json(error.message);
+      }
+    });
+  } finally {
+    // await client.close()
   }
-  run().catch(console.dir);
-  
-  app.listen(PORT, () => console.log(`Listen on PORT: ${PORT}`));
-  
-  app.get("/", async(req, res) => {
-    res.send("running from server");
-  });
+}
+
+app.listen(PORT, () => console.log(`Listen on PORT: ${PORT}`));
+app.get("/", async (req, res) => {
+  res.send("running from server");
+});
+run().catch(console.dir);
