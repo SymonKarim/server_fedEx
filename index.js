@@ -1,106 +1,103 @@
-const PORT = process.env.PORT || 5000
-const express = require('express')
-const dotenv = require('dotenv')
-const cors = require('cors')
-const { MongoClient, ObjectId } = require('mongodb')
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const { MongoClient, ObjectId } = require("mongodb");
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-app.use(cors())
+app.use(cors());
 
-dotenv.config({ path: 'config.env' })
+dotenv.config({ path: "config.env" });
 
-// const uri = process.env.MONGODB_URI
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dpr9k.mongodb.net/FedEX?retryWrites=true&w=majority`;
-const client = new MongoClient(uri)
+const uri = `mongodb+srv://${process.env.DB_USERtwo}:${process.env.DB_PASStwo}@cluster0.dpr9k.mongodb.net/FedEX?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
 
 async function run() {
   try {
-    await client.connect()
-    const database = client.db('FedEX')
-    const foodItems = database.collection('foodItems')
-    const orders = database.collection('orders')
+    await client.connect();
+    const database = client.db("FedEX");
+    const foodItems = database.collection("foodItems");
+    const orders = database.collection("orders");
 
-    app.post('/add_new_item', async (req, res) => {
-      const newItem = req.body
+    app.post("/add_new_item", async (req, res) => {
+      const newItem = req.body;
       try {
-        const savedItem = await foodItems.insertOne(newItem)
-        res.status(200).json(savedItem)
+        const savedItem = await foodItems.insertOne(newItem);
+        res.status(200).json(savedItem);
       } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json(error.message);
       }
-    })
-    
-    app.get('/all_items', async (req, res) => {
-      try {
-        const allItems = await foodItems.find().toArray()
-        res.status(200).json(allItems)
-      } catch (error) {
-        res.status(400).json(error.message)
-      }
-    })
+    });
 
-    app.get('/product/:id', async (req, res) => {
-      const productId = req.params.id
+    app.get("/all_items", async (req, res) => {
+      try {
+        const allItems = await foodItems.find().toArray();
+        res.status(200).json(allItems);
+      } catch (error) {
+        res.status(400).json(error.message);
+      }
+    });
+
+    app.get("/product/:id", async (req, res) => {
+      const productId = req.params.id;
       try {
         const product = await foodItems.findOne({
           _id: new ObjectId(productId),
-        })
-        res.status(200).json(product)
+        });
+        res.status(200).json(product);
       } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json(error.message);
       }
-    })
+    });
 
-    app.post('/create_order/:id', async (req, res) => {
-      const productId = req.params.id
-      const newItem = { productId, ...req.body }
+    app.post("/create_order/:id", async (req, res) => {
+      const productId = req.params.id;
+      const newItem = { productId, ...req.body };
       try {
-        const savedItem = await orders.insertOne(newItem)
-        res.status(200).json(savedItem)
+        const savedItem = await orders.insertOne(newItem);
+        res.status(200).json(savedItem);
       } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json(error.message);
       }
-    })
+    });
 
-    app.get('/all_orders', async (req, res) => {
+    app.get("/all_orders", async (req, res) => {
       try {
-        const allItems = await orders.find().toArray()
-        res.status(200).json(allItems)
+        const allItems = await orders.find().toArray();
+        res.status(200).json(allItems);
       } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json(error.message);
       }
-    })
+    });
 
-    app.put('/updateStatus/:id', async (req, res) => {
-      const orderId = req.params.id
+    app.put("/updateStatus/:id", async (req, res) => {
+      const orderId = req.params.id;
       try {
         const order = await orders.updateOne(
           { _id: orderId },
-          { $set: { status: 'Approved' } }
-        )
-        res.status(200).json(order)
+          { $set: { status: "Approved" } }
+        );
+        res.status(200).json(order);
       } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json(error.message);
       }
-    })
+    });
 
-    app.delete('/delete_order/:id', async (req, res) => {
-      const orderId = req.params.id
+    app.delete("/delete_order/:id", async (req, res) => {
+      const orderId = req.params.id;
       try {
-        const order = await orders.deleteOne({ _id: orderId })
-        res.status(200).json(order)
+        const order = await orders.deleteOne({ _id: orderId });
+        res.status(200).json(order);
       } catch (error) {
-        res.status(400).json(error.message)
+        res.status(400).json(error.message);
       }
-    })
+    });
   } finally {
     // await client.close()
   }
 }
-run().catch(console.dir)
-app.get('/', async (req, res)=>{
-  res.send("running the server!");
-})
-app.listen(PORT, () => console.log(`Listen on PORT: ${PORT}`))
+run().catch(console.dir);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Listen on PORT: ${PORT}`));
