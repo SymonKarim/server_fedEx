@@ -102,3 +102,12 @@ app.get("/", async (req, res) => {
   res.send("running from server");
 });
 run().catch(console.dir);
+
+// DB_USER = samuser1
+// DB_PASS = EKyxKzlZGp0QmhhY
+// DB_USER1 = FedexNew
+// DB_PASS1 = EKyxKzlZGp0QmhhY
+// DB_USERtwo = FEDEX
+// DB_PASStwo = FEDEX
+
+// MONGODB_URI=mongodb+srv://FEDEX:FEDEX@cluster0.dpr9k.mongodb.net/FedEX?retryWrites=true&w=majority
