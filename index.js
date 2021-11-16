@@ -10,7 +10,7 @@ app.use(cors());
 
 dotenv.config({ path: "config.env" });
 
-const uri = process.env.MONGODB_URI2;
+const uri = process.env.g;
 const client = new MongoClient(uri);
 async function run() {
   try {
