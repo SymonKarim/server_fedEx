@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.use(cors());
 
-// dotenv.config({ path: "config.env" });
+dotenv.config({ path: "config.env" });
 
 const uri = MONGODB_URI2;
 const client = new MongoClient(uri);
