@@ -7,11 +7,11 @@ const app = express();
 app.use(express.json());
 
 app.use(cors());
-
-dotenv.config({ path: "config.env" });
-
-const uri = process.env.g;
-const client = new MongoClient(uri);
+const uri = `mongodb+srv://FEDEX:FEDEX@cluster0.dpr9k.mongodb.net/FedEX?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 async function run() {
   try {
     await client.connect();
